@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Din Arijan Dodik</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+            .language-selector a {
+                text-decoration: none;
+                margin: 0 5px;
+                cursor: pointer;
+            }
+
+                .language-selector a:hover {
+                    text-decoration: underline;
+                }
+
+        .container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 20px 0;
+        }
+
+        .separator {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
+
+        h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .contact {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+            .contact a {
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .contact a:hover {
+                    text-decoration: underline;
+                }
+
+        .contact-text {
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="language-selector">
+            <a id="lang-en">EN</a> | <a id="lang-bs">BS</a>
+        </div>
+        <h1>Din Arijan Dodik</h1>
+        <img src="https://lh3.googleusercontent.com/a/AEdFTp7l5Dhglynz3YRltZ_F9AfIYhLCarviDEzN4jb_" alt="Din Arijan Dodik">
+        <hr class="separator">
+        <p id="description"></p>
+        <div class="contact">
+            <p id="contact-message" class="contact-text"></p>
+        </div>
+    </div>
+    <script>
+        const textContent = {
+            en: {
+                description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on and everything else I may come up with. This website is still a work in progress, so stay tuned for more updates!",
+                contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
+            },
+            bs: {
+                description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene. Ovaj sajt je još uvijek u izradi, zbog čega nema više informacija.",
+                contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
+            }
+        };
+
+        const descriptionElement = document.getElementById("description");
+        const contactMessageElement = document.getElementById("contact-message");
+
+        const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        function applyDarkMode(isDark) {
+            if (isDark) {
+                document.body.style.background = 'linear-gradient(135deg, #2c2c2c, #444)';
+                document.querySelector('.container').style.background = '#333';
+                document.querySelector('.container').style.color = '#fff';
+                document.querySelector('h1').style.color = '#fff';
+                document.querySelector('p').style.color = '#ccc';
+                document.querySelector('.language-selector').style.color = '#fff';
+                document.querySelector('.contact').style.color = '#ccc';
+                document.querySelector('.contact-text').style.color = '#ccc';  // Ensure the contact text is light in dark mode
+                document.querySelector('.contact a').style.color = '#fff';
+                document.querySelectorAll('.contact a').forEach((link) => {
+                    link.style.color = '#fff';
+                });
+                document.querySelectorAll('.language-selector a').forEach((link) => {
+                    link.style.color = '#fff';
+                });
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #3a8dff, #e0f7ff)';
+                document.querySelector('.container').style.background = 'white';
+                document.querySelector('.container').style.color = '#333';
+                document.querySelector('h1').style.color = '#333';
+                document.querySelector('p').style.color = '#555';
+                document.querySelector('.language-selector').style.color = '#555';
+                document.querySelector('.contact').style.color = '#555';
+                document.querySelector('.contact-text').style.color = '#555';  // Ensure the contact text is dark in light mode
+                document.querySelector('.contact a').style.color = '#888';
+                document.querySelectorAll('.contact a').forEach((link) => {
+                    link.style.color = '#888';
+                });
+                document.querySelectorAll('.language-selector a').forEach((link) => {
+                    link.style.color = '#555';
+                });
+            }
+        }
+
+        function setLanguage(lang) {
+            descriptionElement.innerHTML = textContent[lang].description;
+            contactMessageElement.innerHTML = textContent[lang].contact;
+            document.documentElement.lang = lang;
+
+            applyDarkMode(prefersDarkMode);
+        }
+
+        setLanguage("en");
+        applyDarkMode(prefersDarkMode);
+
+        document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
+        document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            applyDarkMode(e.matches);
+        });
+    </script>
+</body>
+</html>
