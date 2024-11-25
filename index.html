@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Din Arijan Dodik</title>
     <style>
+        /* General Styles */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -36,20 +37,16 @@
             transition: opacity 0.3s ease;
         }
 
-            .language-selector.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
+        .language-selector a {
+            text-decoration: none;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
 
-            .language-selector a {
-                text-decoration: none;
-                margin: 0 5px;
-                cursor: pointer;
-            }
-
-                .language-selector a:hover {
-                    text-decoration: underline;
-                }
+        .language-selector a:hover {
+            text-decoration: underline;
+        }
 
         .container img {
             width: 100px;
@@ -57,33 +54,6 @@
             border-radius: 50%;
             object-fit: cover;
             margin: 20px 0;
-            transition: transform 0.3s ease;
-        }
-
-        .shake {
-            animation: shake 0.3s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-5px);
-            }
-
-            50% {
-                transform: translateX(5px);
-            }
-
-            75% {
-                transform: translateX(-5px);
-            }
-        }
-
-        .rotated {
-            transform: rotateY(180deg);
         }
 
         .separator {
@@ -100,33 +70,35 @@
         }
 
         p {
-            color: #555;
             line-height: 1.6;
             font-size: 16px;
         }
 
-        .contact {
-            text-align: center;
-            margin-top: 50px;
-            transition: opacity 0.3s ease;
-        }
-
-            .contact.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .contact a {
-                text-decoration: none;
-                font-weight: bold;
-            }
-
-                .contact a:hover {
-                    text-decoration: underline;
-                }
-
         .contact-text {
             transition: color 0.3s ease;
+        }
+
+        .contact-text a {
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        /* Light Mode Styles */
+        body:not([data-theme="dark"]) .contact-text {
+            color: #555;
+        }
+
+        body:not([data-theme="dark"]) .contact-text a {
+            color: #333;
+        }
+
+        /* Dark Mode Styles */
+        body[data-theme="dark"] .contact-text {
+            color: #ccc;
+        }
+
+        body[data-theme="dark"] .contact-text a {
+            color: #fff;
         }
     </style>
 </head>
@@ -143,89 +115,34 @@
             <p id="contact-message" class="contact-text"></p>
         </div>
     </div>
-    <audio id="audio" src="https://dl.sndup.net/4523v/Taki%20Sam%20Ti%20Ja.mp3"></audio>
     <script>
         const textContent = {
             en: {
-                description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on and everything else I may come up with. This website is still a work in progress, so stay tuned for more updates!",
+                description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on and everything else I may come up with.",
                 contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
             },
             bs: {
-                description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene. Ovaj sajt je još uvijek u izradi, zbog čega nema više informacija.",
+                description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene.",
                 contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
             }
         };
 
-        const descriptionElement = document.getElementById("description");
-        const contactMessageElement = document.getElementById("contact-message");
-        const profilePic = document.getElementById("profile-pic");
-        const audio = document.getElementById("audio");
-        const languageSelector = document.getElementById("language-selector");
-        const contact = document.getElementById("contact");
-        const mainTitle = document.getElementById("main-title");
-        const langEN = document.getElementById("lang-en");
-        const langBS = document.getElementById("lang-bs");
-
-        let currentLanguage = "en";
-        let clickCount = 0;
-        const maxClicks = 5;
-
         const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         function applyDarkMode(isDark) {
-            if (isDark) {
-                document.body.style.background = 'linear-gradient(135deg, #2c2c2c, #444)';
-                document.querySelector('.container').style.background = '#333';
-                document.querySelector('.container').style.color = '#fff';
-                document.querySelector('h1').style.color = '#fff';
-                document.querySelector('p').style.color = '#ccc';
-                document.querySelector('.language-selector').style.color = '#fff';
-            } else {
-                document.body.style.background = 'linear-gradient(135deg, #3a8dff, #e0f7ff)';
-                document.querySelector('.container').style.background = 'white';
-                document.querySelector('.container').style.color = '#333';
-            }
+            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
         }
 
         function setLanguage(lang) {
-            currentLanguage = lang;
-            descriptionElement.innerHTML = textContent[lang].description;
-            contactMessageElement.innerHTML = textContent[lang].contact;
-            document.documentElement.lang = lang;
-            applyDarkMode(prefersDarkMode);
+            document.getElementById("description").innerHTML = textContent[lang].description;
+            document.getElementById("contact-message").innerHTML = textContent[lang].contact;
         }
 
-        function handlePictureClick() {
-            if (!profilePic.classList.contains('rotated')) {
-                profilePic.classList.add('shake');
-                clickCount++;
-
-                setTimeout(() => profilePic.classList.remove('shake'), 300);
-
-                if (clickCount === maxClicks) {
-                    profilePic.classList.add('rotated');
-                    profilePic.src = 'https://i.ibb.co/7ysDdXV/465906700-1030408268884197-694835359262183006-n.jpg';
-                    audio.play();
-
-                    mainTitle.textContent = "Don Doda";
-                    descriptionElement.textContent = "bilo mi je dosadno";
-                    langEN.textContent = "EN";
-                    langBS.textContent = "BS";
-
-                    languageSelector.classList.add('hidden');
-                    contact.classList.add('hidden');
-
-                    clickCount = 0;
-                }
-            }
-        }
-
-        setLanguage(currentLanguage);
+        setLanguage("en");
         applyDarkMode(prefersDarkMode);
 
-        profilePic.addEventListener('click', handlePictureClick);
-        langEN.addEventListener("click", () => setLanguage("en"));
-        langBS.addEventListener("click", () => setLanguage("bs"));
+        document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
+        document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
 
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
             applyDarkMode(e.matches);
