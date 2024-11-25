@@ -33,7 +33,13 @@
             right: 20px;
             font-size: 14px;
             color: #555;
+            transition: opacity 0.3s ease;
         }
+
+            .language-selector.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
 
             .language-selector a {
                 text-decoration: none;
@@ -51,6 +57,33 @@
             border-radius: 50%;
             object-fit: cover;
             margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .shake {
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+        }
+
+        .rotated {
+            transform: rotateY(180deg);
         }
 
         .separator {
@@ -63,6 +96,7 @@
         h1 {
             margin: 0;
             color: #333;
+            transition: color 0.3s ease;
         }
 
         p {
@@ -74,7 +108,13 @@
         .contact {
             text-align: center;
             margin-top: 50px;
+            transition: opacity 0.3s ease;
         }
+
+            .contact.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
 
             .contact a {
                 text-decoration: none;
@@ -92,17 +132,18 @@
 </head>
 <body>
     <div class="container">
-        <div class="language-selector">
+        <div class="language-selector" id="language-selector">
             <a id="lang-en">EN</a> | <a id="lang-bs">BS</a>
         </div>
-        <h1>Din Arijan Dodik</h1>
-        <img src="https://lh3.googleusercontent.com/a/AEdFTp7l5Dhglynz3YRltZ_F9AfIYhLCarviDEzN4jb_" alt="Din Arijan Dodik">
+        <h1 id="main-title">Din Arijan Dodik</h1>
+        <img id="profile-pic" src="https://lh3.googleusercontent.com/a/AEdFTp7l5Dhglynz3YRltZ_F9AfIYhLCarviDEzN4jb_" alt="Din Arijan Dodik">
         <hr class="separator">
         <p id="description"></p>
-        <div class="contact">
+        <div class="contact" id="contact">
             <p id="contact-message" class="contact-text"></p>
         </div>
     </div>
+    <audio id="audio" src="https://dl.sndup.net/4523v/Taki%20Sam%20Ti%20Ja.mp3"></audio>
     <script>
         const textContent = {
             en: {
@@ -117,8 +158,19 @@
 
         const descriptionElement = document.getElementById("description");
         const contactMessageElement = document.getElementById("contact-message");
+        const profilePic = document.getElementById("profile-pic");
+        const audio = document.getElementById("audio");
+        const languageSelector = document.getElementById("language-selector");
+        const contact = document.getElementById("contact");
+        const mainTitle = document.getElementById("main-title");
+        const langEN = document.getElementById("lang-en");
+        const langBS = document.getElementById("lang-bs");
 
-        const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let currentLanguage = "en";
+        let clickCount = 0;
+        const maxClicks = 5;
+
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         function applyDarkMode(isDark) {
             if (isDark) {
@@ -128,47 +180,52 @@
                 document.querySelector('h1').style.color = '#fff';
                 document.querySelector('p').style.color = '#ccc';
                 document.querySelector('.language-selector').style.color = '#fff';
-                document.querySelector('.contact').style.color = '#ccc';
-                document.querySelector('.contact-text').style.color = '#ccc';  // Ensure the contact text is light in dark mode
-                document.querySelector('.contact a').style.color = '#fff';
-                document.querySelectorAll('.contact a').forEach((link) => {
-                    link.style.color = '#fff';
-                });
-                document.querySelectorAll('.language-selector a').forEach((link) => {
-                    link.style.color = '#fff';
-                });
             } else {
                 document.body.style.background = 'linear-gradient(135deg, #3a8dff, #e0f7ff)';
                 document.querySelector('.container').style.background = 'white';
                 document.querySelector('.container').style.color = '#333';
-                document.querySelector('h1').style.color = '#333';
-                document.querySelector('p').style.color = '#555';
-                document.querySelector('.language-selector').style.color = '#555';
-                document.querySelector('.contact').style.color = '#555';
-                document.querySelector('.contact-text').style.color = '#555';  // Ensure the contact text is dark in light mode
-                document.querySelector('.contact a').style.color = '#888';
-                document.querySelectorAll('.contact a').forEach((link) => {
-                    link.style.color = '#888';
-                });
-                document.querySelectorAll('.language-selector a').forEach((link) => {
-                    link.style.color = '#555';
-                });
             }
         }
 
         function setLanguage(lang) {
+            currentLanguage = lang;
             descriptionElement.innerHTML = textContent[lang].description;
             contactMessageElement.innerHTML = textContent[lang].contact;
             document.documentElement.lang = lang;
-
             applyDarkMode(prefersDarkMode);
         }
 
-        setLanguage("en");
+        function handlePictureClick() {
+            if (!profilePic.classList.contains('rotated')) {
+                profilePic.classList.add('shake');
+                clickCount++;
+
+                setTimeout(() => profilePic.classList.remove('shake'), 300);
+
+                if (clickCount === maxClicks) {
+                    profilePic.classList.add('rotated');
+                    profilePic.src = 'https://i.ibb.co/7ysDdXV/465906700-1030408268884197-694835359262183006-n.jpg';
+                    audio.play();
+
+                    mainTitle.textContent = "Don Doda";
+                    descriptionElement.textContent = "Don Doda, a figure of unmatched power and respect. He commands loyalty and fear in equal measure. Known for his sharp mind, calculating decisions, and unyielding authority, Don Doda is a man who always gets what he wants. His reputation precedes him—those who cross him disappear without a trace, and those who serve him prosper beyond imagination. In the world of shadows, he is both feared and revered, the true ruler of his domain.";
+                    langEN.textContent = "EN";
+                    langBS.textContent = "BS";
+
+                    languageSelector.classList.add('hidden');
+                    contact.classList.add('hidden');
+
+                    clickCount = 0;
+                }
+            }
+        }
+
+        setLanguage(currentLanguage);
         applyDarkMode(prefersDarkMode);
 
-        document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
-        document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
+        profilePic.addEventListener('click', handlePictureClick);
+        langEN.addEventListener("click", () => setLanguage("en"));
+        langBS.addEventListener("click", () => setLanguage("bs"));
 
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
             applyDarkMode(e.matches);
