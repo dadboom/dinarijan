@@ -16,19 +16,15 @@ body {
 }
 
 .container {
+    background: white;
     width: 90%;
     max-width: 500px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
     padding: 20px;
+    position: relative;
     transition: background 0.3s ease, color 0.3s ease;
-}
-
-/* Links */
-a {
-    text-decoration: none;
-    transition: color 0.3s ease;
 }
 
 .language-selector {
@@ -36,66 +32,88 @@ a {
     top: 10px;
     right: 20px;
     font-size: 14px;
-    transition: color 0.3s ease;
+    color: inherit;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.language-selector a {
+    text-decoration: none;
+    margin: 0 5px;
+    cursor: pointer;
+    color: inherit;
 }
 
 .language-selector a:hover {
     text-decoration: underline;
 }
 
-.contact-text {
+.container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 20px 0;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+}
+
+.rotated {
+    transform: rotateY(180deg);
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 20px 0;
+}
+
+h1 {
+    margin: 0;
+    color: inherit;
     transition: color 0.3s ease;
 }
 
-.contact-text a {
+p {
+    color: inherit;
+    line-height: 1.6;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.contact {
+    text-align: center;
+    margin-top: 50px;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.contact a {
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-weight: bold;
+    color: inherit;
 }
 
-/* Light mode */
-body[data-theme="light"] {
-    background: linear-gradient(135deg, #3a8dff, #e0f7ff);
-    color: #333;
-}
-
-body[data-theme="light"] .container {
-    background: white;
-    color: #333;
-}
-
-body[data-theme="light"] .language-selector a {
-    color: #555;
-}
-
-body[data-theme="light"] .contact-text {
-    color: #555;
-}
-
-body[data-theme="light"] .contact-text a {
-    color: #333;
-}
-
-/* Dark mode */
-body[data-theme="dark"] {
-    background: linear-gradient(135deg, #2c2c2c, #444);
-    color: #fff;
-}
-
-body[data-theme="dark"] .container {
-    background: #333;
-    color: #fff;
-}
-
-body[data-theme="dark"] .language-selector a {
-    color: #fff;
-}
-
-body[data-theme="dark"] .contact-text {
-    color: #ccc;
-}
-
-body[data-theme="dark"] .contact-text a {
-    color: #fff;
+.contact a:hover {
+    text-decoration: underline;
 }
 
     </style>
