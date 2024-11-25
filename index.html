@@ -5,101 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Din Arijan Dodik</title>
     <style>
-        /* General Styles */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+}
 
-        .container {
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
+.container {
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
 
-        .language-selector {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 14px;
-            color: #555;
-            transition: opacity 0.3s ease;
-        }
+/* Links */
+a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
 
-        .language-selector a {
-            text-decoration: none;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
+.language-selector {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
 
-        .language-selector a:hover {
-            text-decoration: underline;
-        }
+.language-selector a:hover {
+    text-decoration: underline;
+}
 
-        .container img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 20px 0;
-        }
+.contact-text {
+    transition: color 0.3s ease;
+}
 
-        .separator {
-            border: 0;
-            height: 1px;
-            background: #ddd;
-            margin: 20px 0;
-        }
+.contact-text a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
 
-        h1 {
-            margin: 0;
-            color: #333;
-            transition: color 0.3s ease;
-        }
+/* Light mode */
+body[data-theme="light"] {
+    background: linear-gradient(135deg, #3a8dff, #e0f7ff);
+    color: #333;
+}
 
-        p {
-            line-height: 1.6;
-            font-size: 16px;
-        }
+body[data-theme="light"] .container {
+    background: white;
+    color: #333;
+}
 
-        .contact-text {
-            transition: color 0.3s ease;
-        }
+body[data-theme="light"] .language-selector a {
+    color: #555;
+}
 
-        .contact-text a {
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+body[data-theme="light"] .contact-text {
+    color: #555;
+}
 
-        /* Light Mode Styles */
-        body:not([data-theme="dark"]) .contact-text {
-            color: #555;
-        }
+body[data-theme="light"] .contact-text a {
+    color: #333;
+}
 
-        body:not([data-theme="dark"]) .contact-text a {
-            color: #333;
-        }
+/* Dark mode */
+body[data-theme="dark"] {
+    background: linear-gradient(135deg, #2c2c2c, #444);
+    color: #fff;
+}
 
-        /* Dark Mode Styles */
-        body[data-theme="dark"] .contact-text {
-            color: #ccc;
-        }
+body[data-theme="dark"] .container {
+    background: #333;
+    color: #fff;
+}
 
-        body[data-theme="dark"] .contact-text a {
-            color: #fff;
-        }
+body[data-theme="dark"] .language-selector a {
+    color: #fff;
+}
+
+body[data-theme="dark"] .contact-text {
+    color: #ccc;
+}
+
+body[data-theme="dark"] .contact-text a {
+    color: #fff;
+}
+
     </style>
 </head>
 <body>
@@ -116,37 +114,47 @@
         </div>
     </div>
     <script>
-        const textContent = {
-            en: {
-                description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on and everything else I may come up with.",
-                contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
-            },
-            bs: {
-                description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene.",
-                contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
-            }
-        };
+const textContent = {
+    en: {
+        description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on, and everything else I may come up with.",
+        contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
+    },
+    bs: {
+        description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene.",
+        contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
+    }
+};
 
-        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+const body = document.body;
+const descriptionElement = document.getElementById("description");
+const contactMessageElement = document.getElementById("contact-message");
+let currentLanguage = "en";
 
-        function applyDarkMode(isDark) {
-            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        }
+function applyTheme() {
+    const isDark = prefersDarkMode.matches;
+    body.setAttribute("data-theme", isDark ? "dark" : "light");
+}
 
-        function setLanguage(lang) {
-            document.getElementById("description").innerHTML = textContent[lang].description;
-            document.getElementById("contact-message").innerHTML = textContent[lang].contact;
-        }
+function setLanguage(lang) {
+    currentLanguage = lang;
+    descriptionElement.innerHTML = textContent[lang].description;
+    contactMessageElement.innerHTML = textContent[lang].contact;
+}
 
-        setLanguage("en");
-        applyDarkMode(prefersDarkMode);
+// Init func
+function initialize() {
+    applyTheme();
+    setLanguage(currentLanguage);
+}
 
-        document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
-        document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
+prefersDarkMode.addEventListener("change", applyTheme);
 
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            applyDarkMode(e.matches);
-        });
+document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
+document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
+
+// Init
+initialize();
     </script>
 </body>
 </html>
