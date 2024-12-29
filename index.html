@@ -113,18 +113,24 @@
 
         const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
         const body = document.body;
-        let currentTheme = localStorage.getItem('theme') || (prefersDarkMode.matches ? 'dark' : 'light');
+        let currentTheme = localStorage.getItem('theme') || null;
         let currentLanguage = localStorage.getItem('language') || 'en';
 
         function applyTheme(theme) {
             body.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+            if (theme === 'dark' || theme === 'light') {
+                localStorage.setItem('theme', theme);
+            } else {
+                localStorage.removeItem('theme');
+            }
         }
 
-        function toggleTheme() {
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            currentTheme = newTheme;
-            applyTheme(newTheme);
+        function updateTheme() {
+            if (currentTheme) {
+                applyTheme(currentTheme);
+            } else {
+                applyTheme(prefersDarkMode.matches ? 'dark' : 'light');
+            }
         }
 
         function setLanguage(lang) {
@@ -135,26 +141,17 @@
         }
 
         function initialize() {
-            applyTheme(currentTheme);
+            updateTheme();
             setLanguage(currentLanguage);
 
             document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
             document.getElementById('lang-bs').addEventListener('click', () => setLanguage('bs'));
 
-            prefersDarkMode.addEventListener('change', (e) => {
+            prefersDarkMode.addEventListener('change', () => {
                 if (!localStorage.getItem('theme')) {
-                    applyTheme(e.matches ? 'dark' : 'light');
+                    updateTheme();
                 }
             });
-
-            // Add theme toggle button
-            const themeToggleButton = document.createElement('button');
-            themeToggleButton.textContent = 'Toggle Theme';
-            themeToggleButton.style.position = 'absolute';
-            themeToggleButton.style.bottom = '10px';
-            themeToggleButton.style.right = '20px';
-            themeToggleButton.addEventListener('click', toggleTheme);
-            document.body.appendChild(themeToggleButton);
         }
 
         initialize();
