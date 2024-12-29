@@ -14,15 +14,16 @@
             height: 100vh;
             transition: background 0.3s ease, color 0.3s ease;
         }
-        .dark-mode {
-            background: black;
-            color: white;
+        .dark-mode .container {
+            background: #121212;
+            color: #ffffff;
         }
 
-        .light-mode {
-            background: white;
-            color: black;
+        .light-mode .container {
+            background: #ffffff;
+            color: #000000;
         }
+
 
 
             body[data-theme="light"] {
@@ -113,26 +114,53 @@
     <script>
         const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const body = document.body;
+        const textContent = {
+            en: {
+                description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on, and everything else I may come up with.",
+                contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
+            },
+            bs: {
+                description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene.",
+                contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
+            }
+        };
 
-        console.log("Initial system preference for dark mode:", prefersDarkMode);
+        let currentLanguage = localStorage.getItem('language') || 'en';
 
         function applyMode(isDark) {
-            console.log("Applying mode:", isDark ? "Dark Mode" : "Light Mode");
             if (isDark) {
                 body.classList.add('dark-mode');
                 body.classList.remove('light-mode');
+                document.querySelector('.container').classList.add('dark-mode');
+                document.querySelector('.container').classList.remove('light-mode');
             } else {
                 body.classList.add('light-mode');
                 body.classList.remove('dark-mode');
+                document.querySelector('.container').classList.add('light-mode');
+                document.querySelector('.container').classList.remove('dark-mode');
             }
         }
 
-        applyMode(prefersDarkMode);
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('description').innerHTML = textContent[lang].description;
+            document.getElementById('contact-message').innerHTML = textContent[lang].contact;
+            localStorage.setItem('language', lang);
+        }
 
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            console.log("System preference changed to:", e.matches ? "Dark Mode" : "Light Mode");
-            applyMode(e.matches);
-        });
+        function initialize() {
+            applyMode(prefersDarkMode);
+            setLanguage(currentLanguage);
+
+            document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+            document.getElementById('lang-bs').addEventListener('click', () => setLanguage('bs'));
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                applyMode(e.matches);
+            });
+        }
+
+        initialize();
     </script>
 
 
