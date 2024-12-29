@@ -100,6 +100,8 @@
         </div>
     </div>
     <script>
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const body = document.body;
         const textContent = {
             en: {
                 description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on, and everything else I may come up with.",
@@ -111,25 +113,15 @@
             }
         };
 
-        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
-        const body = document.body;
-        let currentTheme = localStorage.getItem('theme') || null;
         let currentLanguage = localStorage.getItem('language') || 'en';
 
-        function applyTheme(theme) {
-            body.setAttribute('data-theme', theme);
-            if (theme === 'dark' || theme === 'light') {
-                localStorage.setItem('theme', theme);
+        function applyMode(isDark) {
+            if (isDark) {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
             } else {
-                localStorage.removeItem('theme');
-            }
-        }
-
-        function updateTheme() {
-            if (currentTheme) {
-                applyTheme(currentTheme);
-            } else {
-                applyTheme(prefersDarkMode.matches ? 'dark' : 'light');
+                body.classList.add('light-mode');
+                body.classList.remove('dark-mode');
             }
         }
 
@@ -141,21 +133,21 @@
         }
 
         function initialize() {
-            updateTheme();
+            applyMode(prefersDarkMode);
             setLanguage(currentLanguage);
 
             document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
             document.getElementById('lang-bs').addEventListener('click', () => setLanguage('bs'));
 
-            prefersDarkMode.addEventListener('change', () => {
-                if (!localStorage.getItem('theme')) {
-                    updateTheme();
-                }
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                applyMode(e.matches);
             });
         }
 
         initialize();
     </script>
+
+
 
 </body>
 </html>
