@@ -132,47 +132,67 @@ p {
         </div>
     </div>
     <script>
-const textContent = {
-    en: {
-        description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on, and everything else I may come up with.",
-        contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
-    },
-    bs: {
-        description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene.",
-        contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
-    }
-};
+        const textContent = {
+            en: {
+                description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on, and everything else I may come up with.",
+                contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
+            },
+            bs: {
+                description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene.",
+                contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
+            }
+        };
 
-const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
-const body = document.body;
-const descriptionElement = document.getElementById("description");
-const contactMessageElement = document.getElementById("contact-message");
-let currentLanguage = "en";
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+        const body = document.body;
+        const descriptionElement = document.getElementById("description");
+        const contactMessageElement = document.getElementById("contact-message");
+        let currentLanguage = localStorage.getItem("language") || "en";
+        let currentTheme = localStorage.getItem("theme") || (prefersDarkMode.matches ? "dark" : "light");
 
-function applyTheme() {
-    const isDark = prefersDarkMode.matches;
-    body.setAttribute("data-theme", isDark ? "dark" : "light");
-}
+        function applyTheme(theme) {
+            currentTheme = theme;
+            body.setAttribute("data-theme", theme);
+            localStorage.setItem("theme", theme);
+        }
 
-function setLanguage(lang) {
-    currentLanguage = lang;
-    descriptionElement.innerHTML = textContent[lang].description;
-    contactMessageElement.innerHTML = textContent[lang].contact;
-}
+        function toggleTheme() {
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            applyTheme(newTheme);
+        }
 
-// Init func
-function initialize() {
-    applyTheme();
-    setLanguage(currentLanguage);
-}
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            descriptionElement.innerHTML = textContent[lang].description;
+            contactMessageElement.innerHTML = textContent[lang].contact;
+            localStorage.setItem("language", lang);
+        }
 
-prefersDarkMode.addEventListener("change", applyTheme);
+        function initialize() {
+            applyTheme(currentTheme);
+            setLanguage(currentLanguage);
+        }
 
-document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
-document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
+        document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
+        document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
 
-// Init
-initialize();
+        prefersDarkMode.addEventListener("change", (e) => {
+            if (!localStorage.getItem("theme")) {
+                applyTheme(e.matches ? "dark" : "light");
+            }
+        });
+
+        // Add a button to toggle dark/light mode
+        const themeToggleButton = document.createElement("button");
+        themeToggleButton.textContent = "Toggle Theme";
+        themeToggleButton.style.position = "absolute";
+        themeToggleButton.style.bottom = "10px";
+        themeToggleButton.style.right = "20px";
+        themeToggleButton.addEventListener("click", toggleTheme);
+        document.body.appendChild(themeToggleButton);
+
+        // Init
+        initialize();
     </script>
 </body>
 </html>
