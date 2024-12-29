@@ -113,20 +113,11 @@
     <script>
         const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const body = document.body;
-        const textContent = {
-            en: {
-                description: "Hi, I'm Din Arijan. On this site, you'll find examples of my work, projects I'm working on, and everything else I may come up with.",
-                contact: "If you want to get in touch, feel free to <a href='mailto:dinarijan@dodik.eu'>contact me</a>!"
-            },
-            bs: {
-                description: "Zdravo, ja sam Din Arijan. Na ovom sajtu možete pronaći primjere mog rada, projekte na kojima radim i sve ostalo vezano za mene.",
-                contact: "Ako želite da me kontaktirate, slobodno <a href='mailto:dinarijan@dodik.eu'>napišite mail</a>!"
-            }
-        };
 
-        let currentLanguage = localStorage.getItem('language') || 'en';
+        console.log("Initial system preference for dark mode:", prefersDarkMode);
 
         function applyMode(isDark) {
+            console.log("Applying mode:", isDark ? "Dark Mode" : "Light Mode");
             if (isDark) {
                 body.classList.add('dark-mode');
                 body.classList.remove('light-mode');
@@ -136,27 +127,14 @@
             }
         }
 
-        function setLanguage(lang) {
-            currentLanguage = lang;
-            document.getElementById('description').innerHTML = textContent[lang].description;
-            document.getElementById('contact-message').innerHTML = textContent[lang].contact;
-            localStorage.setItem('language', lang);
-        }
+        applyMode(prefersDarkMode);
 
-        function initialize() {
-            applyMode(prefersDarkMode);
-            setLanguage(currentLanguage);
-
-            document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
-            document.getElementById('lang-bs').addEventListener('click', () => setLanguage('bs'));
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                applyMode(e.matches);
-            });
-        }
-
-        initialize();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            console.log("System preference changed to:", e.matches ? "Dark Mode" : "Light Mode");
+            applyMode(e.matches);
+        });
     </script>
+
 
 
 
