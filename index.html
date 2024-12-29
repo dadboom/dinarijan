@@ -5,117 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Din Arijan Dodik</title>
     <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    transition: background 0.3s ease, color 0.3s ease;
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-.container {
-    background: white;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    padding: 20px;
-    position: relative;
-    transition: background 0.3s ease, color 0.3s ease;
-}
+            body[data-theme="light"] {
+                background: #ffffff;
+                color: #000000;
+            }
 
-.language-selector {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 14px;
-    color: inherit;
-    transition: opacity 0.3s ease, color 0.3s ease;
-}
+            body[data-theme="dark"] {
+                background: #121212;
+                color: #ffffff;
+            }
 
-.language-selector a {
-    text-decoration: none;
-    margin: 0 5px;
-    cursor: pointer;
-    color: inherit;
-}
+        .container {
+            background: inherit;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
 
-.language-selector a:hover {
-    text-decoration: underline;
-}
+            .container img {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin: 20px 0;
+                transition: transform 0.3s ease;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
 
-.container img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 20px 0;
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
+        .language-selector {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 14px;
+        }
 
-.shake {
-    animation: shake 0.3s ease;
-}
+            .language-selector a {
+                text-decoration: none;
+                margin: 0 5px;
+                cursor: pointer;
+                color: inherit;
+            }
 
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-5px);
-    }
-    50% {
-        transform: translateX(5px);
-    }
-    75% {
-        transform: translateX(-5px);
-    }
-}
+                .language-selector a:hover {
+                    text-decoration: underline;
+                }
 
-.rotated {
-    transform: rotateY(180deg);
-}
+        h1, p {
+            margin: 0;
+        }
 
-.separator {
-    border: 0;
-    height: 1px;
-    background: #ddd;
-    margin: 20px 0;
-}
+        .separator {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
 
-h1 {
-    margin: 0;
-    color: inherit;
-    transition: color 0.3s ease;
-}
+        .contact a {
+            color: inherit;
+            font-weight: bold;
+            text-decoration: none;
+        }
 
-p {
-    color: inherit;
-    line-height: 1.6;
-    font-size: 16px;
-    transition: color 0.3s ease;
-}
-
-.contact {
-    text-align: center;
-    margin-top: 50px;
-    transition: opacity 0.3s ease, color 0.3s ease;
-}
-
-.contact a {
-    text-decoration: none;
-    font-weight: bold;
-    color: inherit;
-}
-
-.contact a:hover {
-    text-decoration: underline;
-}
-
+            .contact a:hover {
+                text-decoration: underline;
+            }
     </style>
 </head>
 <body>
@@ -145,52 +113,52 @@ p {
 
         const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
         const body = document.body;
-        const descriptionElement = document.getElementById("description");
-        const contactMessageElement = document.getElementById("contact-message");
-        let currentLanguage = localStorage.getItem("language") || "en";
-        let currentTheme = localStorage.getItem("theme") || (prefersDarkMode.matches ? "dark" : "light");
+        let currentTheme = localStorage.getItem('theme') || (prefersDarkMode.matches ? 'dark' : 'light');
+        let currentLanguage = localStorage.getItem('language') || 'en';
 
         function applyTheme(theme) {
-            currentTheme = theme;
-            body.setAttribute("data-theme", theme);
-            localStorage.setItem("theme", theme);
+            body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
         }
 
         function toggleTheme() {
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            currentTheme = newTheme;
             applyTheme(newTheme);
         }
 
         function setLanguage(lang) {
             currentLanguage = lang;
-            descriptionElement.innerHTML = textContent[lang].description;
-            contactMessageElement.innerHTML = textContent[lang].contact;
-            localStorage.setItem("language", lang);
+            document.getElementById('description').innerHTML = textContent[lang].description;
+            document.getElementById('contact-message').innerHTML = textContent[lang].contact;
+            localStorage.setItem('language', lang);
         }
 
         function initialize() {
             applyTheme(currentTheme);
             setLanguage(currentLanguage);
+
+            document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+            document.getElementById('lang-bs').addEventListener('click', () => setLanguage('bs'));
+
+            prefersDarkMode.addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+
+            // Add theme toggle button
+            const themeToggleButton = document.createElement('button');
+            themeToggleButton.textContent = 'Toggle Theme';
+            themeToggleButton.style.position = 'absolute';
+            themeToggleButton.style.bottom = '10px';
+            themeToggleButton.style.right = '20px';
+            themeToggleButton.addEventListener('click', toggleTheme);
+            document.body.appendChild(themeToggleButton);
         }
-
-        document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
-        document.getElementById("lang-bs").addEventListener("click", () => setLanguage("bs"));
-
-        prefersDarkMode.addEventListener("change", (e) => {
-            if (!localStorage.getItem("theme")) {
-                applyTheme(e.matches ? "dark" : "light");
-            }
-        });
-
-        const themeToggleButton = document.createElement("button");
-        themeToggleButton.textContent = "Toggle Theme";
-        themeToggleButton.style.position = "absolute";
-        themeToggleButton.style.bottom = "10px";
-        themeToggleButton.style.right = "20px";
-        themeToggleButton.addEventListener("click", toggleTheme);
-        document.body.appendChild(themeToggleButton);
 
         initialize();
     </script>
+
 </body>
 </html>
